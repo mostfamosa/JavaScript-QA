@@ -1,0 +1,17 @@
+{
+  "name": "npm-exercises",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ex.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.2.0"
+  }
+}
