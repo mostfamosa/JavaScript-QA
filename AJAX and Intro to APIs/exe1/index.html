@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Book Info</title>
+</head>
+
+<body style="text-align: center;">
+    <h3 for="examples">You can try (ISBN):</h3>
+    <label>9780575087057 ,</label>
+    <label>9782806269171 ,</label>
+    <label>1440633908 ,</label>
+    <label>9781945048470 ,</label>
+    <label>9780307417138</label>
+
+    <br><br><br>
+    <input type="text" id="fetchInput" name="bookInput">
+    <button id="fetchButton">Fetch Book Info</button>
+    <br><br><br><br>
+    <hr>
+    <div>
+        <h1>~ Book Information ~</h1>
+        <h2 style="text-align: left; color: rgb(82, 110, 110);">Author: <input width="auto" id="bookAuthor" disabled>
+        </h2>
+        <h2 style="text-align: left;color: rgb(82, 110, 110);">Title: <label style='width:100%;color: black;'
+                id="bookTitle"></label>
+        </h2>
+        <h2 style="text-align: left;color: rgb(82, 110, 110);">Description: <label
+                style="font-weight: 200; font-size: small;color: black;" id="bookDescription"></label></h2>
+    </div>
+</body>
+
+</html>
