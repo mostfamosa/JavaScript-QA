@@ -1,4 +1,6 @@
 let word = null
+let book = null
+let gif = null
 
 function getRandomGif(searchTerm) {
     return new Promise((resolve, reject) => {
@@ -10,15 +12,16 @@ function getRandomGif(searchTerm) {
                 limit: 5
             },
             success: function (data) {
-                console.log("Success, got data\n", data);
                 if (data.data.length > 0) {
-                    $("#gifImg").attr("src", data.data[0].embed_url);
+                    console.log(data.data[0])
+                    gif = data.data[0]
+                    resolve(data.data[0]);
                 } else {
-                    $("#gifImg").attr("src", ""); // Clear the image if no results are found
+                    reject("No GIF found for the random word.");
                 }
             },
             error: function (error) {
-                console.error("Error", error);
+                reject(error);
             }
         });
     });
@@ -40,15 +43,54 @@ function getRandomWord() {
     });
 }
 
+function getRandomBook(word) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "https://www.googleapis.com/books/v1/volumes",
+            data: {
+                q: word,
+                maxResults: 1
+            },
+            success: function (bookData) {
+                if (bookData.items && bookData.items.length > 0) {
+                    console.log(bookData.items[0].volumeInfo.title)
+                    book = bookData.items[0].volumeInfo.title
+                    resolve(bookData.items[0].volumeInfo.title);
+                } else {
+                    reject("No book found for the random word.");
+                }
+            },
+            error: function (error) {
+                reject(error);
+            }
+        });
+    });
+}
+
 getRandomWord()
-    .then((wordParam) => {
-        word = wordParam
-        console.log(word)
+    .then((generatedWord) => {
+        word = generatedWord;
         $("#searchInput").val(word);
-        let gifPromis = getRandomGif(word)
-        return Promise.all([gifPromis])
+        return Promise.all([getRandomBook(word), getRandomGif(word)]);
     })
-    .then((PromiseResult) => {
-        let gif = PromiseResult
-        console.log(gif)
+    .then(([bookTitle, gifData]) => {
+
+        $("#bookTitle").text("Book Title: " + bookTitle);
+
+        if (gifData) {
+            $("#gifImg").attr("src", gifData.embed_url);
+        } else {
+            $("#gifImg").attr("src", "");
+        }
     })
+    .catch((error) => {
+        console.error("An error occurred:", error);
+        if (error == "No GIF found for the random word.") {
+            $("#gifImg").attr("src", "https://giphy.com/embed/zLCiUWVfex7ji");
+            $("#bookTitle").text("Book Title: Check The Console!" );
+        }
+        if (error == "No book found for the random word.") {
+            $("#bookTitle").text("Book Title: No Match Found !" );
+        }
+        
+    });
